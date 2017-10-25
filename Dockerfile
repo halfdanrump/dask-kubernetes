@@ -2,6 +2,7 @@ FROM ubuntu:16.04
 MAINTAINER Martin Durant <martin.durant@utoronto.ca>
 
 RUN apt-get update -yqq && apt-get install -yqq bzip2 git wget graphviz && rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y libsnappy-dev
 
 # Configure environment
 ENV LC_ALL=C.UTF-8
@@ -19,7 +20,7 @@ ENV PATH="/work/bin:/work/miniconda/bin:$PATH"
 # Install pydata stack
 RUN conda config --set always_yes yes --set changeps1 no --set auto_update_conda no
 RUN conda install notebook psutil numpy pandas scikit-learn statsmodels pip numba \
-        scikit-image datashader holoviews nomkl matplotlib lz4 tornado
+        scikit-image datashader holoviews nomkl matplotlib lz4 tornado snappy
 RUN conda install -c conda-forge fastparquet s3fs zict python-blosc cytoolz dask distributed dask-searchcv gcsfs \
  && conda clean -tipsy \
  && pip install git+https://github.com/dask/dask-glm.git --no-deps\
